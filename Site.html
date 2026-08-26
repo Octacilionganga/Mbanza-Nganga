@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mbanza Nganga — Arquitetura e Urbanismo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+        /* ========== RESET E BASE ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #faf8f5;
+            color: #1e1e1e;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ========== CORES ========== */
+        :root {
+            --verde: #2d5016;
+            --verde-claro: #3f6b22;
+            --areia: #d4b896;
+            --areia-clara: #e8dccc;
+            --cinza: #5a5a5a;
+            --branco: #ffffff;
+            --preto: #1a1a1a;
+        }
+
+        /* ========== BOTÕES ========== */
+        .btn {
+            display: inline-block;
+            padding: 14px 36px;
+            border-radius: 40px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: var(--verde);
+            color: var(--branco);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--verde-claro);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(45, 80, 22, 0.25);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--branco);
+            border: 2px solid var(--branco);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--branco);
+            color: var(--verde);
+        }
+
+        /* ========== HEADER / NAVEGAÇÃO ========== */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background-color: rgba(26, 26, 26, 0.92);
+            backdrop-filter: blur(8px);
+            padding: 14px 0;
+            border-bottom: 2px solid var(--verde);
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--areia);
+            letter-spacing: 1px;
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--branco);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--areia-clara);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--areia);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--branco);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .menu-toggle span {
+            display: block;
+            width: 28px;
+            height: 3px;
+            background-color: var(--branco);
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+
+        /* ========== HERO ========== */
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1a1a 40%, var(--verde) 100%);
+            display: flex;
+            align-items: center;
+            text-align: center;
+            padding-top: 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -30%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(212, 184, 150, 0.08), transparent);
+            border-radius: 50%;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background-color: rgba(212, 184, 150, 0.15);
+            color: var(--areia);
+            padding: 8px 24px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+            border: 1px solid rgba(212, 184, 150, 0.2);
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            color: var(--branco);
+            margin-bottom: 8px;
+            line-height: 1.1;
+        }
+
+        .hero h1 .destaque {
+            color: var(--areia);
+        }
+
+        .hero .subtitulo {
+            font-size: 1.4rem;
+            color: var(--areia-clara);
+            font-weight: 300;
+            margin-bottom: 12px;
+        }
+
+        .hero .fundador {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 32px;
+        }
+
+        .hero .btn-group {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* ========== SEÇÕES ========== */
+        section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: var(--preto);
+            margin-bottom: 12px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background-color: var(--verde);
+            border-radius: 2px;
+        }
+
+        .section-sub {
+            font-size: 1.1rem;
+            color: var(--cinza);
+            max-width: 600px;
+            margin-top: 16px;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-center .section-title::after {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .text-center .section-sub {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ========== SOBRE ========== */
+        .sobre-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            margin-top: 40px;
+        }
+
+        .sobre-texto p {
+            font-size: 1.05rem;
+            color: var(--cinza);
+            margin-bottom: 16px;
+        }
+
+        .sobre-texto .destaque-texto {
+            color: var(--verde);
+            font-weight: 600;
+        }
+
+        .sobre-imagem {
+            background-color: var(--areia-clara);
+            border-radius: 16px;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--cinza);
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="%23b8a08a" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 80px;
+            border: 2px dashed var(--areia);
+        }
+
+        .sobre-imagem img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 16px;
+        }
+
+        /* ========== SERVIÇOS ========== */
+        .servicos {
+            background-color: var(--areia-clara);
+        }
+
+        .servicos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .servico-card {
+            background-color: var(--branco);
+            padding: 36px 28px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+            transition: all 0.3s ease;
+            border-bottom: 4px solid var(--areia);
+        }
+
+        .servico-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+            border-bottom-color: var(--verde);
+        }
+
+        .servico-icone {
+            font-size: 2.8rem;
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .servico-card h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--preto);
+            margin-bottom: 8px;
+        }
+
+        .servico-card p {
+            font-size: 0.95rem;
+            color: var(--cinza);
+        }
+
+        /* ========== PORTFÓLIO ========== */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 40px;
+        }
+
+        .portfolio-item {
+            background-color: var(--branco);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+            transition: all 0.4s ease;
+            border: 1px solid #eee;
+        }
+
+        .portfolio-item:hover {
+            transform: scale(1.02);
+            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.12);
+        }
+
+        .portfolio-item .img-placeholder {
+            width: 100%;
+            height: 220px;
+            background: linear-gradient(135deg, var(--areia-clara), var(--areia));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--cinza);
+            font-size: 0.9rem;
+            font-weight: 600;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="%23908070" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 48px;
+        }
+
+        .portfolio-item .img-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .portfolio-info {
+            padding: 20px 24px 24px;
+        }
+
+        .portfolio-info h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--preto);
+            margin-bottom: 4px;
+        }
+
+        .portfolio-info p {
+            font-size: 0.9rem;
+            color: var(--cinza);
+        }
+
+        /* ========== EQUIPA ========== */
+        .equipa-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+            justify-items: center;
+        }
+
+        .membro {
+            text-align: center;
+        }
+
+        .membro .avatar {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--verde), var(--verde-claro));
+            margin: 0 auto 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--branco);
+            box-shadow: 0 8px 24px rgba(45, 80, 22, 0.2);
+        }
+
+        .membro .avatar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .membro h4 {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .membro p {
+            color: var(--cinza);
+            font-size: 0.95rem;
+        }
+
+        /* ========== CONTACTO ========== */
+        .contacto {
+            background-color: var(--preto);
+            color: var(--branco);
+        }
+
+        .contacto .section-title {
+            color: var(--branco);
+        }
+
+        .contacto .section-title::after {
+            background-color: var(--areia);
+        }
+
+        .contacto .section-sub {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .contacto-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            margin-top: 40px;
+        }
+
+        .contacto-info p {
+            margin-bottom: 12px;
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .contacto-info strong {
+            color: var(--areia);
+        }
+
+        .contacto-info .icone-contato {
+            margin-right: 12px;
+        }
+
+        .contacto-qr {
+            background-color: var(--branco);
+            padding: 24px;
+            border-radius: 16px;
+            text-align: center;
+            color: var(--preto);
+        }
+
+        .contacto-qr .qr-placeholder {
+            width: 160px;
+            height: 160px;
+            background: var(--areia-clara);
+            margin: 12px auto;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            color: var(--cinza);
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="%23908070" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><line x1="14" y1="14" x2="21" y2="21"/><line x1="21" y1="14" x2="14" y2="21"/></svg>');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 48px;
+        }
+
+        .contacto-qr .qr-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .contacto-qr p {
+            font-size: 0.9rem;
+            color: var(--cinza);
+        }
+
+        /* ========== RODAPÉ ========== */
+        .rodape {
+            background-color: #111;
+            color: rgba(255, 255, 255, 0.5);
+            text-align: center;
+            padding: 32px 0;
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .rodape span {
+            color: var(--areia);
+        }
+
+        /* ========== RESPONSIVIDADE ========== */
+        @media (max-width: 992px) {
+            .sobre-grid {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+
+            .contacto-grid {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+
+            .hero h1 {
+                font-size: 3rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                background-color: #1a1a1a;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                padding: 24px;
+                gap: 16px;
+                border-top: 2px solid var(--verde);
+            }
+
+            .nav-links.open {
+                display: flex;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .hero h1 {
+                font-size: 2.4rem;
+            }
+
+            .hero .subtitulo {
+                font-size: 1.1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            section {
+                padding: 56px 0;
+            }
+
+            .portfolio-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .btn {
+                padding: 12px 24px;
+                font-size: 0.9rem;
+            }
+
+            .servicos-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==================== HEADER ==================== -->
+    <header>
+        <div class="container">
+            <a href="#" class="logo">M<span>banza</span> Nganga</a>
+            <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#sobre">Sobre</a></li>
+                <li><a href="#servicos">Serviços</a></li>
+                <li><a href="#portfolio">Portfólio</a></li>
+                <li><a href="#equipa">Equipa</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- ==================== HERO ==================== -->
+    <section class="hero" id="home">
+        <div class="container hero-content">
+            <div class="hero-badge">Arquitetura · Urbanismo · BIM</div>
+            <h1>Mbanza <span class="destaque">Nganga</span></h1>
+            <p class="subtitulo">Projetos que transformam espaços e constroem futuro</p>
+            <p class="fundador">Octacílio Nganga — Fundador &amp; Arquiteto</p>
+            <div class="btn-group">
+                <a href="#portfolio" class="btn btn-primary">Ver Projetos</a>
+                <a href="#contacto" class="btn btn-outline">Fale Connosco</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== SOBRE ==================== -->
+    <section id="sobre">
+        <div class="container">
+            <div class="sobre-grid">
+                <div class="sobre-texto">
+                    <h2 class="section-title">Quem Somos</h2>
+                    <p>
+                        A <strong>Mbanza Nganga</strong> é um ateliê de arquitetura e urbanismo fundado por
+                        <span class="destaque-texto">Octacílio Nganga</span>, arquiteto com cerca de 5 anos de experiência
+                        em desenvolvimento de projetos, modelação BIM e documentação executiva.
+                    </p>
+                    <p>
+                        Atuamos com forte atenção aos detalhes, colaboração multidisciplinar e domínio de ferramentas como
+                        <strong>Revit, AutoCAD, SketchUp, Lumion e Enscape</strong>. Acreditamos que a boa arquitetura
+                        nasce do equilíbrio entre estética, funcionalidade e sustentabilidade.
+                    </p>
+                    <p>
+                        Atualmente, desenvolvemos competências em <strong>Coordenação BIM</strong>, com formação em
+                        mestrado na área, para oferecer soluções cada vez mais integradas e precisas.
+                    </p>
+                </div>
+                <div class="sobre-imagem">
+                    <!-- Substitua o conteúdo abaixo pela sua foto ou imagem -->
+                    <span style="text-align:center; padding: 20px;">
+                        <span style="display:block; font-size:3rem; margin-bottom:8px;">🏗️</span>
+                        <span style="font-size:0.9rem; color:#5a5a5a;">Equipa Mbanza Nganga</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== SERVIÇOS ==================== -->
+    <section class="servicos" id="servicos">
+        <div class="container text-center">
+            <h2 class="section-title">Nossos Serviços</h2>
+            <p class="section-sub">Soluções completas em arquitetura, urbanismo e gestão de projetos.</p>
+            <div class="servicos-grid">
+                <div class="servico-card">
+                    <span class="servico-icone">🏛️</span>
+                    <h3>Arquitetura</h3>
+                    <p>Projetos residenciais, comerciais e institucionais com design autoral e funcional.</p>
+                </div>
+                <div class="servico-card">
+                    <span class="servico-icone">🌆</span>
+                    <h3>Urbanismo</h3>
+                    <p>Planeamento do solo, loteamento e projetos de requalificação urbana.</p>
+                </div>
+                <div class="servico-card">
+                    <span class="servico-icone">📐</span>
+                    <h3>BIM Modeling</h3>
+                    <p>Modelação paramétrica, documentação técnica e coordenação multidisciplinar.</p>
+                </div>
+                <div class="servico-card">
+                    <span class="servico-icone">📊</span>
+                    <h3>Consultoria</h3>
+                    <p>Orientação técnica, compatibilização de projetos e gestão da informação.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== PORTFÓLIO ==================== -->
+    <section id="portfolio">
+        <div class="container text-center">
+            <h2 class="section-title">Portfólio</h2>
+            <p class="section-sub">Alguns dos nossos projetos recentes.</p>
+            <div class="portfolio-grid">
+                <!-- Item 1 -->
+                <div class="portfolio-item">
+                    <div class="img-placeholder">
+                        <!-- Coloque sua imagem aqui: <img src="caminho/para/imagem1.jpg" alt="Projeto 1" /> -->
+                        <span>Projeto 1</span>
+                    </div>
+                    <div class="portfolio-info">
+                        <h4>Anexo Residencial</h4>
+                        <p>Espaço de convivência e apoio, Luanda.</p>
+                    </div>
+                </div>
+                <!-- Item 2 -->
+                <div class="portfolio-item">
+                    <div class="img-placeholder">
+                        <span>Projeto 2</span>
+                    </div>
+                    <div class="portfolio-info">
+                        <h4>Casa Serena</h4>
+                        <p>Residência unifamiliar com design contemporâneo.</p>
+                    </div>
+                </div>
+                <!-- Item 3 -->
+                <div class="portfolio-item">
+                    <div class="img-placeholder">
+                        <span>Projeto 3</span>
+                    </div>
+                    <div class="portfolio-info">
+                        <h4>Casa Geminada</h4>
+                        <p>Projeto de moradia geminada em condomínio.</p>
+                    </div>
+                </div>
+                <!-- Item 4 -->
+                <div class="portfolio-item">
+                    <div class="img-placeholder">
+                        <span>Projeto 4</span>
+                    </div>
+                    <div class="portfolio-info">
+                        <h4>Closete</h4>
+                        <p>Espaço de arrumação e organização residencial.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== EQUIPA ==================== -->
+    <section id="equipa">
+        <div class="container text-center">
+            <h2 class="section-title">Equipa</h2>
+            <p class="section-sub">Profissionais dedicados a transformar ideias em realidade.</p>
+            <div class="equipa-grid">
+                <div class="membro">
+                    <div class="avatar">
+                        <!-- Coloque sua foto aqui: <img src="caminho/para/sua-foto.jpg" alt="Octacílio Nganga" /> -->
+                        ON
+                    </div>
+                    <h4>Octacílio Nganga</h4>
+                    <p>Arquiteto · Fundador</p>
+                </div>
+                <!-- Adicione mais membros se quiser -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== CONTACTO ==================== -->
+    <section class="contacto" id="contacto">
+        <div class="container">
+            <div class="text-center">
+                <h2 class="section-title">Contacto</h2>
+                <p class="section-sub">Vamos conversar sobre o seu próximo projeto.</p>
+            </div>
+            <div class="contacto-grid">
+                <div class="contacto-info">
+                    <p><span class="icone-contato">📞</span> <strong>Telefone:</strong> 946 559 817 / 942 451 060</p>
+                    <p><span class="icone-contato">✉️</span> <strong>E-mail:</strong> octacilionganga@gmail.com</p>
+                    <p><span class="icone-contato">📍</span> <strong>Localização:</strong> Luanda, Angola</p>
+                    <p><span class="icone-contato">🕒</span> <strong>Horário:</strong> Segunda a Sexta, 8h – 17h</p>
+                    <p style="margin-top:24px;">
+                        <a href="https://wa.me/244946559817" target="_blank" class="btn btn-primary" style="background-color:#25D366; color:#fff; border:none;">
+                            💬 WhatsApp
+                        </a>
+                    </p>
+                </div>
+                <div class="contacto-qr">
+                    <h4 style="margin-bottom:8px;">Portfólio Digital</h4>
+                    <div class="qr-placeholder">
+                        <!-- Coloque a imagem do seu QR Code aqui: <img src="caminho/para/qrcode.png" alt="QR Code" /> -->
+                        <span style="font-size:0.7rem;">QR Code</span>
+                    </div>
+                    <p>Apontem a câmera para ver o portfólio completo</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== RODAPÉ ==================== -->
+    <footer class="rodape">
+        <div class="container">
+            <p>&copy; 2026 <span>Mbanza Nganga</span> — Arquitetura e Urbanismo. Todos os direitos reservados.</p>
+            <p style="margin-top:6px; font-size:0.8rem; opacity:0.6;">Projetado com dedicação para transformar espaços.</p>
+        </div>
+    </footer>
+
+    <!-- ==================== JAVASCRIPT ==================== -->
+    <script>
+        // Menu mobile
+        const toggle = document.getElementById('menuToggle');
+        const nav = document.getElementById('navLinks');
+
+        toggle.addEventListener('click', () => {
+            nav.classList.toggle('open');
+        });
+
+        // Fechar menu ao clicar num link (mobile)
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                nav.classList.remove('open');
+            });
+        });
+
+        // Smooth scroll para links internos (fallback caso o navegador não suporte)
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href === '#') return;
+                e.preventDefault();
+                const target = document.querySelector(href);
+                if (target) {
+                    const offset = 80; // altura do header
+                    const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+                    window.scrollTo({ top, behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
